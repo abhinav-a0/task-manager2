@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    body { 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0f172a; 
+      color: #e2e8f0;
+      min-height: 100vh; 
+      padding: 60px 20px; 
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(14, 165, 233, 0.15) 0px, transparent 50%);
+    }
+
+    .container { 
+      max-width: 680px; 
+      margin: 0 auto; 
+    }
+
+    .header {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    h1 { 
+      font-size: 36px; 
+      font-weight: 700;
+      background: linear-gradient(to right, #818cf8, #38bdf8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px; 
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle { 
+      color: #94a3b8; 
+      font-size: 14px; 
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .input-row { 
+      display: flex; 
+      gap: 12px; 
+      margin-bottom: 24px; 
+      background: #1e293b;
+      padding: 8px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    input { 
+      flex: 1; 
+      padding: 14px 16px; 
+      background: transparent;
+      border: none;
+      color: #f8fafc;
+      font-size: 16px; 
+      outline: none; 
+    }
+
+    input::placeholder {
+      color: #64748b;
+    }
+
+    .btn { 
+      padding: 12px 24px; 
+      background: #4f46e5; 
+      color: white; 
+      border: none;
+      border-radius: 8px; 
+      font-size: 15px; 
+      cursor: pointer; 
+      font-weight: 600;
+      white-space: nowrap; 
+      transition: all 0.2s ease; 
+    }
+
+    .btn:hover { 
+      background: #4338ca; 
+      transform: translateY(-1px);
+    }
+
+    .btn.danger { 
+      background: rgba(239, 68, 68, 0.1); 
+      color: #f87171;
+    }
+    .btn.danger:hover { 
+      background: rgba(239, 68, 68, 0.2); 
+    }
+
+    .btn.success { 
+      background: rgba(16, 185, 129, 0.1); 
+      color: #34d399;
+    }
+    .btn.success:hover { 
+      background: rgba(16, 185, 129, 0.2); 
+    }
+
+    .btn.sm { 
+      padding: 8px 14px; 
+      font-size: 13px; 
+    }
+
+    .stats { 
+      font-size: 14px; 
+      color: #94a3b8; 
+      margin-bottom: 16px; 
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .task-list { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px; 
+    }
+
+    .task-card { 
+      background: #1e293b; 
+      border-radius: 12px; 
+      padding: 16px 20px;
+      display: flex; 
+      align-items: center; 
+      gap: 16px;
+      border: 1px solid #334155; 
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .task-card:hover {
+      border-color: #475569;
+      transform: translateX(4px);
+    }
+
+    .task-title { 
+      flex: 1; 
+      font-size: 16px; 
+      color: #f8fafc; 
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .task-title.done { 
+      text-decoration: line-through; 
+      color: #64748b; 
+    }
+
+    .status-badge { 
+      font-size: 11px; 
+      padding: 4px 10px; 
+      border-radius: 6px; 
+      font-weight: 700; 
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-badge.pending { 
+      background: rgba(245, 158, 11, 0.1); 
+      color: #fbbf24; 
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .status-badge.done { 
+      background: rgba(16, 185, 129, 0.1); 
+      color: #34d399; 
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .actions { 
+      display: flex; 
+      gap: 8px; 
+    }
+
+    .empty { 
+      text-align: center; 
+      color: #64748b; 
+      padding: 48px 20px; 
+      font-size: 15px; 
+      background: #1e293b;
+      border-radius: 12px;
+      border: 1px dashed #475569;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Task Manager</h1>
+      <p class="subtitle">Python Flask · AWS EC2 · CI/CD Pipeline · SQLite</p>
+    </div>
+
+    <div class="input-row">
+      <input id="taskInput" placeholder="What needs to be done?"
+             onkeydown="if(event.key==='Enter') addTask()" autocomplete="off" />
+      <button class="btn" onclick="addTask()">Add Task</button>
+    </div>
+    
+    <div id="stats" class="stats"></div>
+    <div id="taskList" class="task-list"></div>
+  </div>
+
+  <script>
+    async function loadTasks() {
+      const res = await fetch('/api/tasks');
+      const tasks = await res.json();
+      const list = document.getElementById('taskList');
+      const stats = document.getElementById('stats');
+      const done = tasks.filter(t => t.status === 'done').length;
+      
+      stats.innerHTML = tasks.length
+        ? `<span>Total Tasks: <strong style="color:#f8fafc">${tasks.length}</strong></span>
+           <span>Completed: <strong style="color:#34d399">${done}</strong></span>`
+        : '';
+        
+      list.innerHTML = tasks.length === 0
+        ? '<div class="empty">No tasks yet. Add one above!</div>'
+        : tasks.map(t => `
+          <div class="task-card">
+            <span class="task-title ${t.status === 'done' ? 'done' : ''}">${t.title}</span>
+            <span class="status-badge ${t.status}">${t.status}</span>
+            <div class="actions">
+              <button class="btn success sm"
+                onclick="toggleTask(${t.id},'${t.status==='done'?'pending':'done'}')">
+                ${t.status === 'done' ? 'Undo' : 'Complete'}
+              </button>
+              <button class="btn danger sm" onclick="deleteTask(${t.id})">Delete</button>
+            </div>
+          </div>`).join('');
+    }
+
+    async function addTask() {
+      const input = document.getElementById('taskInput');
+      if (!input.value.trim()) return;
+      await fetch('/api/tasks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: input.value.trim() })
+      });
+      input.value = '';
+      loadTasks();
+    }
+
+    async function toggleTask(id, status) {
+      await fetch(`/api/tasks/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      });
+      loadTasks();
+    }
+
+    async function deleteTask(id) {
+      await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
+      loadTasks();
+    }
+
+    loadTasks();
+  </script>
+</body>
+</html>
